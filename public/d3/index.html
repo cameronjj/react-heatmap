@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style></style>
+<svg></svg>
+<script src="d3/d3.js" charset="utf-8"></script>
+<script>
+
+var svg = d3.select("svg"),
+    cellSize = 20,
+    gap = 2,
+    legendMax = 20,
+    dataset = [5, 8, 7, 10, 15, 1, 25],
+    colors = ['#ffffb2','#fecc5c','#fd8d3c','#f03b20','#bd0026'];
+
+var rect = svg.selectAll("rect")
+  .data(dataset);
+
+var colorScale = d3.scaleQuantize()
+  .domain([0,legendMax])
+  .range(colors);
+
+rect.enter().append("rect")
+  .attr("y", 0)
+  .attr("x", function(d,i) { return i * (cellSize + gap); })
+  .attr("height", cellSize)
+  .attr("width", cellSize)
+  .style("fill", colorWithMax);
+
+rect.exit().remove();
+
+function colorWithMax(d) {
+  if (d > legendMax) {
+    return colors[colors.length - 1];
+  }
+  else { 
+    return colorScale(d);
+  }
+}
+
+</script>
+
+<!-- colorbrewer: YlOrRd: "#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026" 
+
+-->
